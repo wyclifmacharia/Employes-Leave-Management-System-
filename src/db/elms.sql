@@ -44,7 +44,7 @@ CREATE TABLE Leave_Request (
     status VARCHAR(50) DEFAULT 'Pending',
     requested_at DATETIME DEFAULT GETDATE(),
     FOREIGN KEY (employee_id) REFERENCES Employees(employee_id)
-        ON DELETE CASCADE ON UPDATE CASCADE,
+        ON DELETE NO ACTION ON UPDATE CASCADE,
     FOREIGN KEY (leave_type_id) REFERENCES Leave_Type(leave_type_id)
         ON DELETE CASCADE ON UPDATE CASCADE
 );
@@ -68,7 +68,9 @@ CREATE TABLE Notification (
     FOREIGN KEY (employee_id) REFERENCES Employees(employee_id)
         ON DELETE NO ACTION ON UPDATE CASCADE,
     FOREIGN KEY (request_id) REFERENCES Leave_Request(request_id)
+     
 );
+
 
 --POPULATING THE TABLES 
 -- Inserting samples to department table
@@ -101,7 +103,8 @@ INSERT INTO Leave_Request (employee_id, leave_type_id, start_date, end_date, tot
 (1, 1, '2024-07-01', '2024-07-10', 10.0, 'Family vacation', 'pending', GETDATE()),
 (1, 2, '2024-08-05', '2024-08-07', 3.0, 'Medical reasons', 'Pending', GETDATE()),
 (2, 1, '2024-07-07', '2024-07-10', 10.0, 'Family vacation', 'pending', GETDATE()),
-(2, 2, '2024-09-05', '2024-08-07', 3.0, 'school', 'Pending', GETDATE());
+(2, 2, '2024-09-05', '2024-08-07', 3.0, 'school', 'Pending', GETDATE()),
+(3, 2, '2024-09-05', '2024-08-07', 3.0, 'Maternity', 'Pending', GETDATE());
 
 -- Inserting sample leave balances
 INSERT INTO Leave_Balance (employee_id, balance_days) VALUES
@@ -128,3 +131,11 @@ SELECT * FROM Leave_Request;
 SELECT * FROM Leave_Balance;
 SELECT * FROM Notification;
 GO
+-- Dropping tables if they exist
+-- DROP TABLE IF EXISTS Notification;
+-- DROP TABLE IF EXISTS Leave_Balance;
+-- DROP TABLE IF EXISTS Leave_Request;
+-- DROP TABLE IF EXISTS Leave_Type;
+-- DROP TABLE IF EXISTS Employees;
+-- DROP TABLE IF EXISTS Departments;
+-- GO
