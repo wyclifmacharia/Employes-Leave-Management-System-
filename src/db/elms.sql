@@ -1,7 +1,6 @@
 -- Select the database
 USE ELMS_DB;
 GO
-
 -- DEPARTMENTS TABLE
 CREATE TABLE Departments (
     department_id INT IDENTITY(1,1) PRIMARY KEY,
