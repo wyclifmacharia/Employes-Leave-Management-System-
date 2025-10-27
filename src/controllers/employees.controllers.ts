@@ -2,7 +2,6 @@
 import  { Request, response, Response } from 'express';
 import  * as employeeService from'../services/employees.services';
 import { Employee} from '../types/employess.types';   
-import { ifError } from 'assert';
 
 //create Employee
 export const createEmployee = async (req: Request, res: Response) => {
@@ -15,6 +14,8 @@ export const createEmployee = async (req: Request, res: Response) => {
     }catch (error) {
         res.status(500).json({ error: error.message });
     }
+
+    // 
 
 
 };
@@ -96,7 +97,9 @@ export const UpdateEmployee = async(req:Request, res :Response)=>{
        }
     }
 };
-// 
+// deletee employee
+export const delete
+
 
 
 
