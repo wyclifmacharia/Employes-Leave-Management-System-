@@ -3,6 +3,7 @@ import express from 'express'
 import dotenv from 'dotenv';
 import { getPool } from './db/config';
 //import route later   
+import employeesRoutes from './routers/employees.routes';   
 
 const app = express()
 
@@ -13,6 +14,7 @@ app.use(express.json());
 const port = process.env.PORT || 8081;
 
 //register routes ie,
+employeesRoutes(app);
 
 //Root route
 app.get('/', (req, res) => {
