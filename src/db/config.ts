@@ -1,6 +1,7 @@
 import dotenv from 'dotenv';
 import assert from 'assert'; //ensures that env variables are defined
 import sql from 'mssql';
+import { Console } from 'console';
 
 dotenv.config(); // Loads the environment variables from .env file
 
@@ -51,4 +52,6 @@ export const getPool = async () => {
         console.log("SQL Connection Error: ", error);
         throw error;
     }
+
+    
 };
