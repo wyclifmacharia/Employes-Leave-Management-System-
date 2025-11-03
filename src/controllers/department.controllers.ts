@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { getPool } from '../db/config';
 
-// ✅ GET all departments
+// GET all departments
 export const getDepartments = async (req: Request, res: Response) => {
   try {
     const pool = await getPool();
@@ -13,7 +13,7 @@ export const getDepartments = async (req: Request, res: Response) => {
   }
 };
 
-// ✅ CREATE a new department
+//  CREATE a new department
 export const createDepartment = async (req: Request, res: Response) => {
   const { name } = req.body;
 
@@ -34,7 +34,7 @@ export const createDepartment = async (req: Request, res: Response) => {
   }
 };
 
-// ✅ GET department by ID
+// GET department by ID
 export const getDepartmentById = async (req: Request, res: Response) => {
   const { id } = req.params;
 
@@ -56,7 +56,7 @@ export const getDepartmentById = async (req: Request, res: Response) => {
   }
 };
 
-// ✅ UPDATE a department
+// UPDATE a department
 export const updateDepartment = async (req: Request, res: Response) => {
   const { id } = req.params;
   const { name } = req.body;
@@ -76,7 +76,7 @@ export const updateDepartment = async (req: Request, res: Response) => {
   }
 };
 
-// ✅ DELETE a department
+// DELETE a department
 export const deleteDepartment = async (req: Request, res: Response) => {
   const { id } = req.params;
 
