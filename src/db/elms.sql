@@ -17,10 +17,15 @@ CREATE TABLE Employees (
     date_joined DATE,
     is_active BIT DEFAULT 1,
     department_id INT,
+    verification_code VARCHAR(10),
+    is_verified BIT DEFAULT 0
     FOREIGN KEY (department_id) REFERENCES Departments(department_id)
         ON DELETE SET NULL ON UPDATE CASCADE
 );
 
+-- ALTER TABLE Employees
+-- ADD verification_code VARCHAR(10),
+--     is_verified BIT DEFAULT 0;
 
 -- LEAVE_TYPE TABLE
 CREATE TABLE Leave_Type (
