@@ -17,10 +17,15 @@ CREATE TABLE Employees (
     date_joined DATE,
     is_active BIT DEFAULT 1,
     department_id INT,
+    verification_code VARCHAR(10),
+    is_verified BIT DEFAULT 0
     FOREIGN KEY (department_id) REFERENCES Departments(department_id)
         ON DELETE SET NULL ON UPDATE CASCADE
 );
 
+-- ALTER TABLE Employees
+-- ADD verification_code VARCHAR(10),
+--     is_verified BIT DEFAULT 0;
 
 -- LEAVE_TYPE TABLE
 CREATE TABLE Leave_Type (
@@ -43,7 +48,7 @@ CREATE TABLE Leave_Request (
     status VARCHAR(50) DEFAULT 'Pending',
     requested_at DATETIME DEFAULT GETDATE(),
     FOREIGN KEY (employee_id) REFERENCES Employees(employee_id)
-        ON DELETE NO ACTION ON UPDATE CASCADE,
+        ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (leave_type_id) REFERENCES Leave_Type(leave_type_id)
         ON DELETE CASCADE ON UPDATE CASCADE
 );
@@ -60,16 +65,15 @@ CREATE TABLE Leave_Balance (
 -- NOTIFICATION TABLE
 CREATE TABLE Notification (
     notification_id INT IDENTITY(1,1) PRIMARY KEY,
-    employee_id INT NOT NULL,
+    employee_id INT NULL,
     request_id INT NOT NULL,
     message TEXT NOT NULL,
     created_at DATETIME DEFAULT GETDATE(),
     FOREIGN KEY (employee_id) REFERENCES Employees(employee_id)
-        ON DELETE NO ACTION ON UPDATE CASCADE,
+        ON DELETE NO ACTION ON UPDATE NO ACTION,  -- Changed this
     FOREIGN KEY (request_id) REFERENCES Leave_Request(request_id)
-     
+        ON DELETE CASCADE ON UPDATE CASCADE
 );
-
 
 --POPULATING THE TABLES 
 -- Inserting samples to department table
@@ -96,7 +100,8 @@ VALUES
 ('wyclif', 'macha', 'wyclif.macha@example.com', 'mypass', 'manager', GETDATE(), 1, 2),
 ('joshua', 'kamotho', 'joshua.kamotho@example.com', 'mypass', 'user', GETDATE(), 1, 3),
 ('edwin', 'mwangi', 'edwin.mwangi@example.com', 'mypass', 'user', GETDATE(), 1, 4),
-('mary', 'nyambu', 'mary.nyambu@example.com', 'mypass', 'user', GETDATE(), 1, 3);
+('mary', 'nyambu', 'mary.nyambu@example.com', 'mypass', 'user', GETDATE(), 1, 3)
+
 -- Inserting sample leave requests 
 INSERT INTO Leave_Request (employee_id, leave_type_id, start_date, end_date, total_days, justification, status, requested_at) VALUES
 (1, 1, '2024-07-01', '2024-07-10', 10.0, 'Family vacation', 'pending', GETDATE()),
@@ -111,9 +116,9 @@ INSERT INTO Leave_Balance (employee_id, balance_days) VALUES
 (2, 10.0),
 (3, 18.0),
 (4, 0.0),
-(5, 7.0),
-(6, 5.0),
-(7, 12.0)
+(4, 7.0),
+(3, 5.0),
+(2, 12.0)
 -- Inserting sample notifications
 INSERT INTO Notification (employee_id, request_id, message) VALUES
 (1, 1, 'Your leave request for Annual Leave is pending approval.'),
@@ -124,16 +129,16 @@ INSERT INTO Notification (employee_id, request_id, message) VALUES
 
 --selecting 
 SELECT * FROM Employees;
-SELECT * FROM Departments;  
-SELECT * FROM Leave_Type;
-SELECT * FROM Leave_Request;
-SELECT * FROM Leave_Balance;
-SELECT * FROM Notification;
-GO
+-- SELECT * FROM Departments;  
+-- SELECT * FROM Leave_Type;
+-- SELECT * FROM Leave_Request;
+-- SELECT * FROM Leave_Balance;
+-- SELECT * FROM Notification;
+-- GO
 -- Dropping tables if they exist
 -- DROP TABLE IF EXISTS Notification;
 -- DROP TABLE IF EXISTS Leave_Balance;
--- DROP TABLE IF EXISTS Leave_Request;
+--  DROP TABLE IF EXISTS Leave_Request;
 -- DROP TABLE IF EXISTS Leave_Type;
 -- DROP TABLE IF EXISTS Employees;
 -- DROP TABLE IF EXISTS Departments;
