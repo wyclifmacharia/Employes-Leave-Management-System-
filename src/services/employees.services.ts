@@ -40,6 +40,13 @@ export const createEmployee = async(employee: NewEmployee) => {
         emailTemplate.welcome(employee.first_name)
 
     );
+
+    await sendEmail(
+        employee.email,
+        'Verify your email for the  ELMS',
+        emailTemplate.verify(employee.first_name,verificationCode)
+    );
+    
     return {message :'Employee created successfully.Verification code sent to email'};
 
 }
