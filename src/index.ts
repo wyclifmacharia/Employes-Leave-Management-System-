@@ -1,37 +1,27 @@
-
-import express from 'express'
-import dotenv from 'dotenv';
-import { getPool } from './db/config';
-import departmentRoutes from './routers/department.routes';
-
-
-//import route later   
-import employeesRoutes from './routers/employees.routes';   
-
-const app = express()
+import express from "express";
+import dotenv from "dotenv";
+import departmentRoutes from "./routers/department.routes";
 
 dotenv.config();
-//middleware
-app.use(express.json()); 
 
-const port = process.env.PORT || 8081;
+const app = express();
+const PORT = process.env.PORT || 3000;
 
-//register routes ie,
-app.use('/api/departments', departmentRoutes)
-employeesRoutes(app);
+// Middleware
+app.use(express.json());
 
-
-//Root route
-app.get('/', (req, res) => {
-    res.send("Hello, express API is running...");
+// Basic test route
+app.get("/", (req, res) => {
+  res.send("Welcome to the Employee Leave Management System API");
 });
 
-app.listen(port, () => {
-    console.log(`Server is running on port: http://localhost:${port}`);
-})
+// API routes
+app.use("/api/departments", departmentRoutes);
 
-//test database connection
-getPool()
-    .then(() => console.log("Database connected"))
-    .catch((err: any) => console.log("Database connection failed: ", err));
+// Start server
+app.listen(PORT, () => {
+  console.log(` Server running at http://localhost:${PORT}`);
+});
+
+
 
