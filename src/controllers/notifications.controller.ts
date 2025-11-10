@@ -4,7 +4,7 @@ import * as notificationServices from '../services/notifications.services'
 
 export const getAllNotifications = async(req: Request, res: Response) => {
     try{
-        const notifications = await notificationServices.getAllNotifications();
+        const notifications = await notificationServices.getAllNotification();
         res.status(200).json(notifications);
     }catch(error:any){
         res.status(500).json({error:error.message});
@@ -12,9 +12,9 @@ export const getAllNotifications = async(req: Request, res: Response) => {
 };
 
 export const getNotificationById =async( req:Request, res: Response) => {
-    const notificationId =parseInt(req.params.id);
+    const notificationId =parseInt(req.params.notificationId);
     try{
-        const notification = await notificationServices.getNotification(notificationId);
+        const notification = await notificationServices.getEmployeeNotifications(notificationId);
         if (notification){
             res.status(200).json(notification);
         } else {
@@ -56,13 +56,13 @@ export const updateNotification = async (req: Request, res: Response) => {
 };
 
 export const deleteNotification = async(req: Request, res: Response) => {
-    const notificationId = parseInt(req.params.id);
+    const notificationId = parseInt(req.params.notification_id);
     if(isNaN(notificationId)){
         return res.status(400).json({message: 'Invalid Notification'});
     }
 
     try{
-        const result = await notificationServices.removeNotification(notificationId);
+        const result = await notificationServices.deleteNotification(notificationId);
         res.status(200).json(result);
     } catch(error:any){
         if (error.message === 'Notification not Found'){

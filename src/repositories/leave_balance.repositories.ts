@@ -1,47 +1,106 @@
 import { getPool } from "../db/config";
 import { Leave_Balance, NewLeave_Balance, UpdateLeave_Balance } from  "../types/leavebalance.types";
 
-
-export const getAllLeaveBalances = async (): Promise<Leave_Balance[]> => {
+//get all leave balance for  any employee findByEmployeeId
+export const getAllLeaveBalances = async (employee_id:number) => {
     const pool = await getPool();
-    const result = await pool.request().query("SELECT * FROM Leave_Balance");
-    return result.recordset;
-};
-
-export const getLeaveBalanceById = async (id: number): Promise<Leave_Balance> => {
-    const pool = await getPool();
-    const result = await pool.request()
-        .input("id", id)
-        .query("SELECT * FROM Leave_Balance WHERE balance_id = @id");
+    const result = await pool
+    .request()
+    .input('employee_id',employee_id)
+    .query("SELECT * FROM Leave_Balance WHERE employee_id = @employee_id');");
     return result.recordset[0];
 };
 
-export const createLeaveBalance = async (leaveBalance: NewLeave_Balance) => {
+//cretae initial balance for the employee
+export const create = async (employee_id:number, balance_days:number=20.0) => {
+
+      const pool = await getPool();
+      const result = await pool
+        .request()
+        .input('employee_id', employee_id)
+        .input('balance_days', balance_days)
+        .query(`
+            INSERT INTO Leave_Balance (employee_id, balance_days)
+            OUTPUT INSERTED.*
+            VALUES (@employee_id, @balance_days)
+        `);
+    
+    return result.recordset[0];
+
+}
+//Deduct day from the balance 
+export const deductBalance = async (employee_id:number,days:number) => {
+
     const pool = await getPool();
-    const result = await pool.request()
-        .input("employee_id", leaveBalance.employee_id)
-        .input("balance_days", leaveBalance.balance_days)
-        .query("INSERT INTO Leave_Balance (employee_id, balance_days) VALUES (@employee_id, @balance_days)");
-        return{ message: "Leave balance created successfully." , leaveBalance: result.recordset[0]};
+    const result = await pool
+        .request()
+        .input('employee_id', employee_id)
+        .input('days', days)
+
+        .query(`
+            UPDATE Leave_Balance 
+            SET balance_days = balance_days - @days
+            OUTPUT INSERTED.*
+            WHERE employee_id = @employee_id
+        `);
+        return result.recordset[0];
+}
+
+
+//Add back days to balance when leave rejected
+export const addBalance = async (employee_id: number, days: number) => {
+    const pool = await getPool();
+    const result = await pool
+        .request()
+        .input('employee_id',  employee_id)
+        .input('days', days)
+        .query(`
+            UPDATE Leave_Balance 
+            SET balance_days = balance_days + @days
+            OUTPUT INSERTED.*
+            WHERE employee_id = @employee_id
+        `);
+
+        return result.recordset[0];
+
+        };
+//Update balance directly  on leave acceptance 
+export const updateBalance = async (employee_id: number, balance_days: number) => {
+    const pool = await getPool();
+    const result = await pool
+        .request()
+        .input('employee_id',employee_id)
+        .input('balance_days', balance_days)
+        .query(`
+            UPDATE Leave_Balance 
+            SET balance_days = @balance_days
+            OUTPUT INSERTED.*
+            WHERE employee_id = @employee_id
+        `);
+    
+    return result.recordset[0];
 };
 
-export const updateLeaveBalance = async (id: number, leaveBalance: UpdateLeave_Balance) => {
+// Get all balances (for admin)
+export const findAll = async (): Promise<Leave_Balance[]> => {
     const pool = await getPool();
-    await pool.request()
-        .input("id", id)
-        .input("employee_id", leaveBalance.employee_id)
-        .input("balance_days", leaveBalance.balance_days)
-        .query(`UPDATE Leave_Balance 
-                SET employee_id = COALESCE(@employee_id, employee_id),  
-                    balance_days = COALESCE(@balance_days, balance_days)
-                WHERE balance_id = @id`);
-    return { message: "Leave balance updated successfully." };
+    const result = await pool
+        .request()
+        .query(`
+            SELECT lb.*, e.first_name, e.last_name, e.email, d.department_name
+            FROM Leave_Balance lb
+            INNER JOIN Employees e ON lb.employee_id = e.employee_id
+            LEFT JOIN Departments d ON e.department_id = d.department_id
+            ORDER BY e.last_name, e.first_name
+        `);
+    
+    return result.recordset;
 };
-
-export const deleteLeaveBalance = async (id: number) => {
+//deleting the leave balance 
+export const deleteLeaveBalance = async (balance_id: number) => {
     const pool = await getPool();
     await pool.request()
-        .input("id", id)
-        .query("DELETE FROM Leave_Balance WHERE balance_id = @id");
+        .input("id", balance_id)
+        .query("DELETE FROM Leave_Balance WHERE balance_id = @balance_id");
     return { message: "Leave balance deleted successfully." };
 }

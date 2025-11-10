@@ -1,5 +1,4 @@
 const sql = require('mssql');
-import { promises } from "dns";
 import {getPool} from "../db/config";
 import { Leave_Request, New_leave_Request } from "../types/leave_request.type";
 import { Employee } from "../types/employess.types";
@@ -17,7 +16,7 @@ import { Employee } from "../types/employess.types";
                 .input('total_days', leaveReq.total_days)
                 .input('justification', leaveReq.justification)
 
-                .query('INSERT INTO Leave_Request(employee_id, leave_type_id, start_date, end_date, total_days, justification)VALUES (@employee_id, @leave_type_id, @start_date, @end_date, @total_days, @justification,)');
+                .query('INSERT INTO Leave_Request(employee_id, leave_type_id, start_date, end_date, total_days, justification)VALUES (@employee_id, @leave_type_id, @start_date, @end_date, @total_days, @justification)');
 
             
               return {message:'leaveReq created succesfully'};
@@ -45,7 +44,7 @@ import { Employee } from "../types/employess.types";
     return result.recordset[0];
 };  
   // Get all leave requests for an employee
-export const findLeaveReqByEmployeeId=async(employee_id:Employee) =>{
+export const findLeaveReqByEmployeeId=async(employee_id:number): Promise<Leave_Request> => {
         
             const pool = await getPool();
             const result = await pool
@@ -59,9 +58,9 @@ export const findLeaveReqByEmployeeId=async(employee_id:Employee) =>{
                     WHERE lr.employee_id = @employee_id
                     ORDER BY lr.requested_at DESC
                 `);
-            return result.recordset;
-     
-    
+                return result.recordset[0];
+        
+
     }
 
     // Get all pending leave requests(admin.......)
@@ -87,7 +86,7 @@ export const findLeaveReqByEmployeeId=async(employee_id:Employee) =>{
     }
 
     // Get all leave requests no mater the status  (for admin.....)
-    export const findAllLeaveReq=():Promise<Leave_Request[]> => {
+    export const findAllLeaveReq=async():Promise<Leave_Request[]> => {
         
             const pool = await getPool();
             const result = await pool
@@ -170,6 +169,6 @@ export const findLeaveReqByEmployeeId=async(employee_id:Employee) =>{
             const result = await request.query(query);
             return result.recordset;
         } catch (error) {
-            throw error;
+            throw{error:error} ;
         }
     }

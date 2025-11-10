@@ -3,6 +3,7 @@ export interface Notification{
     employee_id: number;
     request_id:number;
     message:string;
+    created_at:Date
 }
 
 export interface NewNotification{

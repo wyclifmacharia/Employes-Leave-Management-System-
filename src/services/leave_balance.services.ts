@@ -1,22 +1,59 @@
-import * as leaveBalanceRepository from '../repositories/leave_balance.repositories';
+import * as LeaveBalanceRepository from '../repositories/leave_balance.repositories';
 import { Leave_Balance, NewLeave_Balance, UpdateLeave_Balance } from '../types/leavebalance.types';
 
-export const getAllLeaveBalances = async (id:number) => await leaveBalanceRepository.getAllLeaveBalances();
-export const getLeaveBalanceById = async (id: number)=> await leaveBalanceRepository.getLeaveBalanceById(id);
-export const createLeaveBalance = async (leaveBalance: NewLeave_Balance) => await leaveBalanceRepository.createLeaveBalance(leaveBalance);
 
-export const modifyleaveBalance = async(id:number, leaveBalanceUpdates: UpdateLeave_Balance) => {
-    const existingleaveBalance = await leaveBalanceRepository.getLeaveBalanceById(id);
-    if(!existingleaveBalance){
-        throw new Error('Car not Found');
-    }
-    return await leaveBalanceRepository.updateLeaveBalance(id, leaveBalanceUpdates);
-}
+export const getEmployeeLeaveBalances = async (employee_id: number): Promise<Leave_Balance[]> => {
+  try {
+    return await LeaveBalanceRepository.getAllLeaveBalances(employee_id);
+  } catch (error) {
+    throw new Error(`Failed to get leave balances: ${error}`);
+  }
+};
 
-export const removeLeaveBalance = async(id:number) => {
-    const existingleaveBalance = await leaveBalanceRepository.getLeaveBalanceById(id);
-    if(!existingleaveBalance){
-        throw new Error('Leave Balance not Found');
-    }
-    return await leaveBalanceRepository.deleteLeaveBalance(id);
-}
+export const createInitialBalance = async (employee_id: number, balance_days: number = 20): Promise<Leave_Balance> => {
+  try {
+    return await LeaveBalanceRepository.create(employee_id, balance_days);
+  } catch (error) {
+    throw new Error(`Failed to create leave balance: ${error}`);
+  }
+};
+
+export const deductLeaveDays = async (employee_id: number, days: number): Promise<Leave_Balance> => {
+  try {
+    return await LeaveBalanceRepository.deductBalance(employee_id, days);
+  } catch (error) {
+    throw new Error(`Failed to deduct leave days: ${error}`);
+  }
+};
+
+export const addLeaveDays = async (employee_id: number, days: number): Promise<Leave_Balance> => {
+  try {
+    return await LeaveBalanceRepository.addBalance(employee_id, days);
+  } catch (error) {
+    throw new Error(`Failed to add leave days: ${error}`);
+  }
+};
+
+export const updateLeaveBalance = async (employee_id: number, newBalance: number): Promise<Leave_Balance> => {
+  try {
+    return await LeaveBalanceRepository.updateBalance(employee_id, newBalance);
+  } catch (error) {
+    throw new Error(`Failed to update leave balance: ${error}`);
+  }
+};
+
+export const getAllBalances = async (): Promise<Leave_Balance[]> => {
+  try {
+    return await LeaveBalanceRepository.findAll();
+  } catch (error) {
+    throw new Error(`Failed to fetch all leave balances: ${error}`);
+  }
+};
+
+export const deleteLeaveBalance = async (id: number): Promise<{ message: string }> => {
+  try {
+    return await LeaveBalanceRepository.deleteLeaveBalance(id);
+  } catch (error) {
+    throw new Error(`Failed to delete leave balance: ${error}`);
+  }
+};
