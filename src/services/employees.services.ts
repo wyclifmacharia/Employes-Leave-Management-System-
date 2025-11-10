@@ -6,7 +6,6 @@ import bcrypt from "bcrypt"
 import dotenv from 'dotenv';
 import { sendEmail } from '../mailer/mailers';
 import { emailTemplate } from '../mailer/email_templates';
-import { error } from 'console';
 
 dotenv.config();
 

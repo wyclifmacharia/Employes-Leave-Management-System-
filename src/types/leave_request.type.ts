@@ -1,4 +1,5 @@
 export interface Leave_Request {
+    length: number;
     request_id: number;
     employee_id:number;
     leave_type_id:number;
@@ -6,7 +7,7 @@ export interface Leave_Request {
     end_date:Date;
     total_days:number;
     justification:Text
-    status:string
+    status:'Pending' | 'Approved' | 'Rejected' | 'Cancelled';
     requested_at:Date;
 
 }
