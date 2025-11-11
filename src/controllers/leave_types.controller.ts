@@ -12,7 +12,7 @@ export const getLeaveTypes = async (req: Request, res: Response) => {
 };
 
 export const getLeaveTypeById = async (req: Request, res: Response) => {
-    const id = Number.parseInt(req.params.id);
+    const id = Number.parseInt(req.params.leave_type_id);
     try {
         const leaveType = await leaveTypeServices.getLeaveType(id);
         if (leaveType) {
@@ -40,7 +40,7 @@ export const createLeaveType = async (req: Request, res: Response) => {
 };
 
 export const updateLeaveType = async (req: Request, res: Response) => {
-    const id = Number.parseInt(req.params.id);
+    const id = Number.parseInt(req.params.leave_type_id);
     const leaveType = req.body;
     try {
         const result = await leaveTypeServices.updateLeaveType(id, leaveType);
@@ -59,7 +59,7 @@ export const updateLeaveType = async (req: Request, res: Response) => {
 };
 
 export const deleteLeaveType = async (req: Request, res: Response) => {
-    const id = Number.parseInt(req.params.id);
+    const id = Number.parseInt(req.params.leave_type_id);
     try {
         const result = await leaveTypeServices.deleteLeaveType(id);
         res.status(204).json(result);

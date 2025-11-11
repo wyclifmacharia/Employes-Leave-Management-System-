@@ -7,12 +7,12 @@ export const getAllLeaveTypes = async (): Promise<LeaveType[]> => {
     return result.recordset;
 };
 
-export const getLeaveTypeById = async (id: number): Promise<LeaveType> => {
+export const getLeaveTypeById = async (leave_type_id: number): Promise<LeaveType> => {
     const pool = await getPool();
     const result = await pool
         .request()
-        .input('id', id)
-        .query('SELECT * FROM Leave_Type WHERE leave_type_id = @id');
+        .input('id', leave_type_id)
+        .query('SELECT * FROM Leave_Type WHERE leave_type_id = @leave_type_id');
     return result.recordset[0];
 };
 
@@ -27,22 +27,22 @@ export const createLeaveType = async (leaveType: NewLeaveType) => {
     return { message: 'Leave type created successfully' };
 };
 
-export const updateLeaveType = async (id: number, leaveType: UpdateLeaveType) => {
+export const updateLeaveType = async (leave_type_id: number, leaveType: UpdateLeaveType) => {
     const pool = await getPool();
     await pool
         .request()
-        .input('id', id)
+        .input('leave_type_id', leave_type_id)
         .input('type_name', leaveType.type_name)
         .input('description', leaveType.description)
         .input('default_days', leaveType.default_days)
-        .query('UPDATE Leave_Type SET type_name = @type_name, description = @description, default_days = @default_days WHERE leave_type_id = @id');
+        .query('UPDATE Leave_Type SET type_name = @type_name, description = @description, default_days = @default_days WHERE leave_type_id = @leave_type_id');
     return { message: 'Leave type updated successfully' };
 };
 
-export const deleteLeaveType = async (id: number) => {
+export const deleteLeaveType = async (leave_type_id: number) => {
     const pool = await getPool();
     await pool
         .request()
-        .input('id', id)
-        .query('DELETE FROM Leave_Type WHERE leave_type_id = @id');
+        .input('id', leave_type_id)
+        .query('DELETE FROM Leave_Type WHERE leave_type_id = @leave_type_id');
 };
