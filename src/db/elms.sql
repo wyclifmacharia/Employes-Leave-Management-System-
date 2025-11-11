@@ -143,3 +143,10 @@ SELECT * FROM Employees;
 -- DROP TABLE IF EXISTS Employees;
 -- DROP TABLE IF EXISTS Departments;
 -- GO
+
+
+SELECT lb.*, e.first_name, e.last_name, e.email, d.department_name
+FROM Leave_Balance lb
+INNER JOIN Employees e ON lb.employee_id = e.employee_id
+LEFT JOIN Departments d ON e.department_id = d.department_id
+ORDER BY e.last_name, e.first_name;
