@@ -6,7 +6,7 @@ import {
   deleteDepartmentService,
 } from "../services/department.services";
 
-// READ - Get all departments
+// GET all departments
 export const getDepartments = async (req: Request, res: Response) => {
   try {
     const departments = await getDepartmentsService();
@@ -17,10 +17,24 @@ export const getDepartments = async (req: Request, res: Response) => {
   }
 };
 
-// CREATE - Add new department
+//  CREATE a new department
 export const createDepartment = async (req: Request, res: Response) => {
   try {
-    const { department_name } = req.body;
+    const pool = await getPool();
+    await pool
+      .request()
+      .input('name', name)
+      .query('INSERT INTO Departments (department_name) VALUES (@name)');
+    res.status(201).json({ message: 'Department created successfully' });
+  } catch (err: any) {
+    console.error('Error creating department:', err);
+    res.status(500).json({ message: 'Error creating department', error: err.message });
+  }
+};
+
+// GET department by ID
+export const getDepartmentById = async (req: Request, res: Response) => {
+  const { id } = req.params;
 
     if (!department_name) {
       return res.status(400).json({ message: "Department name is required" });
@@ -34,7 +48,7 @@ export const createDepartment = async (req: Request, res: Response) => {
   }
 };
 
-// UPDATE - Modify existing department
+// UPDATE a department
 export const updateDepartment = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
@@ -52,7 +66,7 @@ export const updateDepartment = async (req: Request, res: Response) => {
   }
 };
 
-// DELETE - Remove a department
+// DELETE a department
 export const deleteDepartment = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;

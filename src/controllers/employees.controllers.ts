@@ -2,65 +2,69 @@
 import  { Request, response, Response } from 'express';
 import  * as employeeService from'../services/employees.services';
 import { Employee} from '../types/employess.types';   
-import { ifError } from 'assert';
+import { error } from 'console';
 
-//create Employee
+//CREATE AN EMPLOYEE
 export const createEmployee = async (req: Request, res: Response) => {
 
     try{
         const employee = req.body;
+        console.log( employee);
         const result = await employeeService.createEmployee(employee);
         res.status(201).json(result);
         
-    }catch (error) {
-        res.status(500).json({ error: error.message });
+    }catch (error:any ) {
+        res.status(500).json({ error:error .message });
+        //console.log(error);
+    }
+
+};
+
+// DELETE EMPLOYEE BY ID 
+ export const deleteEmployee = async(req:Request,res:Response) => {
+
+    const id =parseInt(req.params.employee_id);
+//bad req if  id aint a nomber
+    if(isNaN(id)){
+        return res.status(400).json({ message:'invalid Employee id' });
+
+    }
+    //else proceed 
+    try{
+
+        const result = await employeeService.deleteEmployee(id);
+        res.status(200).json(result)
+
+    }catch(error:any){
+
+        //if Employee doesnt exist
+        if(error.message ==='Employee not found '){
+            return res.status(401).json({ message:'Employee not found '})
+
+        }else{
+            res.status(500).json({ error:error.message });
+            console.log(error.message);
+
+
+        }
+
+
     }
 
 
-};
-//verify employee email
-// export const verifyUser = async (req: Request, res: Response) => {
-//     try {
-//         const { email, code } = req.body;
+ }
 
-//         if (!email || !code) {
-//             return res.status(400).json({ message: 'Email and code are required' });
-//         }
-//         const result = await userServices.verifyUser(email, code);
-//         res.status(200).json(result);
-//     } catch (error: any) {
-//         if (error.message === 'User not found') {
-//             res.status(404).json({ message: error.message });
-//         } else if (error.message === 'Invalid verification code') {
-//             res.status(400).json({ message: error.message });
-//         } else {
-//             res.status(500).json({ error: error.message });
-//         }
-//     }
-// }
-
-
-
-//list all employees
-export const getAllEmployees = async (req: Request, res: Response) => {
-    try {
-        const employees = await employeeService.getAllEmployees();
-        res.status(200).json(employees);
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-};
-
-//get employee by id 
-
+//GET EMPLOYEEEE BY ID 
 export const getEmployeeById = async (req: Request, res: Response) => {
-        const id =perseInt(req.params.employee_id);
+
+        const id =parseInt(req.params.employee_id);
     try{
         const employee = await employeeService.getEmployeeById(id);
         if(employee){
             res.status(200).json(employee);
         } else {
             res.status(404).json({message: 'Employee not found'});
+            console.log(error);
         }
 
     } catch (error:any) {
@@ -68,9 +72,20 @@ export const getEmployeeById = async (req: Request, res: Response) => {
     }
 
 };
-//update employee
+//lIST ALL EMPLOYESS
+export const getAllEmployees = async (req: Request, res: Response) => {
 
+    try {
+        const employees = await employeeService.listEmployee();
+        res.status(200).json(employees);
+    } catch (error:any ) {
+        res.status(500).json({ error: error.message });
+    }
+ };
+
+//UPDATE EMPLOYEEE
 export const UpdateEmployee = async(req:Request, res :Response)=>{
+
     const id = parseInt(req.params.employee_id);
     //bad req if employee_id  not found 
 
@@ -82,21 +97,53 @@ export const UpdateEmployee = async(req:Request, res :Response)=>{
 
     try {
         const employee = req.body;
-        const result = await employeeService.UpdateEmployee(id,employee);
+        const result = await employeeService.updateEmployee(id,employee);
         res.status(200).json(result)
        
         
     } catch (error: any) {
        if(error.message ==='Employee not found '){
-        return res .status(404).json({message:'User not found '})
+        return res .status(404).json({message:'Employee not found '})
 
        }else {
         return res.status(500).json({error:error.message})
+  
 
        }
     }
 };
-// 
 
+//LOGIN CONTROLLER 
+export const loginEmployee = async (req: Request, res: Response) => {
+    try {
+        const { email, hashed_pass } = req.body;
 
+        const result = await employeeService.loginEmployee(email, hashed_pass);
+        res.status(200).json(result);
+    } catch (error: any) {
+        if (error.message === 'Employee not found') {
+            res.status(404).json({ error: error.message });
+        } else if (error.message === 'Invalid credentials') {
+            res.status(401).json({ error: error.message });
+        } else {
+            res.status(500).json({ error: error.message });
+        }
+    }
+}
+
+// VERIFICATION CONTROLLER 
+export const verifyEmployee = async (req: Request, res: Response) => {
+    try {
+        const { email, code } = req.body;
+    
+        if (!email || !code) {
+            return res.status(400).json({ message: 'Email and verification code are required' });
+        }
+
+        const result = await employeeService.verifyEmployee(email, code);
+        res.status(200).json(result);
+    } catch (error: any) {
+        res.status(400).json({ message: error.message });
+    }
+};
 
