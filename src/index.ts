@@ -2,11 +2,11 @@
 import express from 'express'
 import dotenv from 'dotenv';
 import { getPool } from './db/config';
-import departmentRoutes from './routers/department.routes';
-
 
 //import route later   
 import employeesRoutes from './routers/employees.routes';   
+import leaveBalanceRoutes from './routers/leave_balance.routes';
+import departmentRoutes from './routers/department.routes';
 
 const app = express()
 
@@ -16,9 +16,10 @@ app.use(express.json());
 
 const port = process.env.PORT || 8081;
 
-//register routes ie,
-app.use('/api/departments', departmentRoutes)
+//register routes 
 employeesRoutes(app);
+leaveBalanceRoutes(app);
+departmentRoutes(app);
 
 
 //Root route

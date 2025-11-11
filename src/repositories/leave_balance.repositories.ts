@@ -7,12 +7,13 @@ export const getAllLeaveBalances = async (employee_id:number) => {
     const result = await pool
     .request()
     .input('employee_id',employee_id)
-    .query("SELECT * FROM Leave_Balance WHERE employee_id = @employee_id');");
+    .query("SELECT * FROM Leave_Balance WHERE employee_id = @employee_id");
     return result.recordset[0];
+
 };
 
 //cretae initial balance for the employee
-export const create = async (employee_id:number, balance_days:number=20.0) => {
+export const create = async (employee_id:number, balance_days:number) => {
 
       const pool = await getPool();
       const result = await pool
@@ -95,12 +96,22 @@ export const findAll = async (): Promise<Leave_Balance[]> => {
         `);
     
     return result.recordset;
+   
 };
 //deleting the leave balance 
 export const deleteLeaveBalance = async (balance_id: number) => {
     const pool = await getPool();
-    await pool.request()
-        .input("id", balance_id)
+    const result = await pool.request()
+        .input("balance_id", balance_id)
         .query("DELETE FROM Leave_Balance WHERE balance_id = @balance_id");
+
+        if (result.rowsAffected[0] === 0) {
+        throw new Error("Leave Balance not Found");
+    }
+
     return { message: "Leave balance deleted successfully." };
-}
+};
+
+   
+    
+

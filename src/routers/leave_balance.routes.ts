@@ -1,12 +1,12 @@
 import { Express}  from "express";
 import * as leaveBalanceController from "../controllers/leave_balance.controllers";
 
-const leaveBalanceRouter = (app: Express) => {
-  app.get("/leave-balances", leaveBalanceController.getAllLeaveBalances);
-  app.get("/leave-balances/:id", leaveBalanceController.getLeaveBalanceById);
-  app.post("/leave-balances", leaveBalanceController.createLeaveBalance);
-  app.put("/leave-balances/:id", leaveBalanceController.updatedLeaveBalance);
-  app.delete("/leave-balances/:id", leaveBalanceController.deleteLeaveBalance);
+const leaveBalanceRoutes = (app: Express) => {
+  app.get("/ListAllLeaveBal", leaveBalanceController.getAllLeaveBalances);
+  app.get("/GetLeavebalByid/:employee_id", leaveBalanceController.getLeaveBalanceById);
+  app.post("/CreateLeavBal", leaveBalanceController.createLeaveBalance);
+  app.put("/UpdateleaveBal", leaveBalanceController.updateLeaveBalance);
+  app.delete("/DeleteleaveBal/:balance_id", leaveBalanceController.deleteLeaveBalance);
 };
 
-export default leaveBalanceRouter;
+export default leaveBalanceRoutes;

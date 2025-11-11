@@ -1,9 +1,12 @@
 import {Request, Response} from 'express';
 import * as leaveBalnceServices from '../services/leave_balance.services';
-//listy all leave balances 
+import { error } from 'console';
+//list all leave balances 
 export const getAllLeaveBalances = async (req: Request, res: Response) => {
     try{
-        const leaveBalance = await leaveBalnceServices.getAllBalances;
+        const leaveBalance = await leaveBalnceServices.getAllBalances();
+        console.log(leaveBalance);
+    
         res.status(200).json(leaveBalance);
     } catch (error: any){
         res.status(500).json({error:error.message});
@@ -18,10 +21,12 @@ export const getLeaveBalanceById = async(req: Request, res: Response) => {
         if (leaveBalance){
             res.status(200).json(leaveBalance);
         }else{
-            res.status(400).json({message:'Leave Balnace not Found'});
+            res.status(400).json({message:'Leave Balance not Found'});
+        
         }
     }catch(error:any){
         res.status(500).json({error:error.message});
+        console.log("Error fetching the leave balance ",error);
     }
 };
 //creting initial bal
@@ -30,9 +35,10 @@ export const createLeaveBalance = async(req: Request, res: Response) =>{
     try{
         const { employee_id,balance_days} = req.body;
         const createdLeaveBalance = await leaveBalnceServices.createInitialBalance(Number(employee_id),balance_days);
-        res.status(201).json(createLeaveBalance);
+        res.status(201).json(createdLeaveBalance);
     } catch (error:any){
         res.status(500).json({error: error.message});
+        console.log(error)
     }
 };
 // Add back leave days on rejection
@@ -48,9 +54,10 @@ export const addLeaveDays = async (req: Request, res: Response) => {
 //update leave bal 
 export const updateLeaveBalance = async (req: Request, res: Response) => {
   try {
-    const { employee_id, newBalance } = req.body;
-    const updated = await leaveBalnceServices.updateLeaveBalance(Number(employee_id), newBalance);
+    const { employee_id, balance_days } = req.body;
+    const updated = await leaveBalnceServices.updateLeaveBalance(Number(employee_id), balance_days);
     res.status(200).json(updated);
+    console.log(updated);
   } catch (error: any) {
     res.status(500).json({ message: error.message });
   }
