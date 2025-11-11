@@ -1,20 +1,16 @@
-import express from 'express';
+import express from "express";
 import {
   getDepartments,
   createDepartment,
-  getDepartmentById,
   updateDepartment,
-  deleteDepartment
-} from '../controllers/department.controllers';
+  deleteDepartment,
+} from "../controllers/department.controllers";
 
 const router = express.Router();
 
-// CRUD routes
-router.get('/', getDepartments);
-router.post('/', createDepartment);
-router.get('/:id', getDepartmentById);
-router.put('/:id', updateDepartment);
-router.delete('/:id', deleteDepartment);
+router.get("/", getDepartments); // GET all
+router.post("/", createDepartment); // CREATE
+router.put("/:id", updateDepartment); // UPDATE
+router.delete("/:id", deleteDepartment); // DELETE
 
 export default router;
-
