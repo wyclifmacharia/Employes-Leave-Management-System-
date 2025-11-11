@@ -130,7 +130,7 @@ INSERT INTO Notification (employee_id, request_id, message) VALUES
 --selecting 
 SELECT * FROM Employees;
 -- SELECT * FROM Departments;  
--- SELECT * FROM Leave_Type;
+SELECT * FROM Leave_Type;
 -- SELECT * FROM Leave_Request;
 -- SELECT * FROM Leave_Balance;
 -- SELECT * FROM Notification;

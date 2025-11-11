@@ -1,14 +1,18 @@
-import  express  from "express";
+import  {Express} from "express";
 import * as leaveTypeController from "../controllers/leave_types.controller";
 
-const router = express.Router();
+const LeaveTypeRoutes = (app:Express) => {
 
 
-    router.get("/", leaveTypeController.getLeaveTypes);
-    router.get("/:id", leaveTypeController.getLeaveTypeById);
-    router.post("/", leaveTypeController.createLeaveType);
-    router.put("/:id", leaveTypeController.updateLeaveType);
-    router.delete("/:id", leaveTypeController.deleteLeaveType);
+    app.get("/", leaveTypeController.getLeaveTypes);
+    app.get("/:id", leaveTypeController.getLeaveTypeById);
+    app.post("/", leaveTypeController.createLeaveType);
+    app.put("/:id", leaveTypeController.updateLeaveType);
+    app.delete("/:id", leaveTypeController.deleteLeaveType);
+
+}
 
 
-export default router;
+ 
+
+export  default LeaveTypeRoutes;

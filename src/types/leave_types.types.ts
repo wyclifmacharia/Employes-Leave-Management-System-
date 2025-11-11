@@ -10,6 +10,8 @@ export interface NewLeaveType {
     type_name: string;
     description: string;
     default_days: number;
+     created_at: Date;
+
 }
 
 export interface UpdateLeaveType {
