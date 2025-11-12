@@ -10,13 +10,11 @@ import leaveBalanceRoutes from './routers/leave_balance.routes';
 import LeaveTypeRoutes from './routers/leave_types.routes';
 import LeaveRequestRoutes from './routers/leave_request.routes';
 
-const app = express()
 
 dotenv.config();
-//middleware
-app.use(express.json()); 
 
-const port = process.env.PORT || 3000;
+const app = express();
+const PORT = process.env.PORT || 3000;
 
 //register routes ie,
 
@@ -26,18 +24,18 @@ departmentRoutes(app);
 LeaveTypeRoutes(app);
 LeaveRequestRoutes(app);
 
-
-//Root route
-app.get('/', (req, res) => {
-    res.send("Hello, express API is running...");
+// Basic test route
+app.get("/", (req, res) => {
+  res.send("Welcome to the Employee Leave Management System API");
 });
 
-app.listen(port, () => {
-    console.log(`Server is running on port: http://localhost:${port}`);
-})
+// API routes
+app.use("/api/departments", departmentRoutes);
 
-//test database connection
-getPool()
-    .then(() => console.log("Database connected"))
-    .catch((err: any) => console.log("Database connection failed: ", err));
+// Start server
+app.listen(PORT, () => {
+  console.log(` Server running at http://localhost:${PORT}`);
+});
+
+
 

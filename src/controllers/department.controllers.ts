@@ -1,26 +1,24 @@
-import { Request, Response } from 'express';
-import { getPool } from '../db/config';
+import { Request, Response } from "express";
+import {
+  getDepartmentsService,
+  createDepartmentService,
+  updateDepartmentService,
+  deleteDepartmentService,
+} from "../services/department.services";
 
 // GET all departments
 export const getDepartments = async (req: Request, res: Response) => {
   try {
-    const pool = await getPool();
-    const result = await pool.request().query('SELECT * FROM Departments');
-    res.status(200).json(result.recordset);
-  } catch (err: any) {
-    console.error('Error fetching departments:', err);
-    res.status(500).json({ message: 'Error fetching departments', error: err.message });
+    const departments = await getDepartmentsService();
+    res.status(200).json(departments);
+  } catch (error: any) {
+    console.error("Error fetching departments:", error);
+    res.status(500).json({ message: "Internal Server Error" });
   }
 };
 
 //  CREATE a new department
 export const createDepartment = async (req: Request, res: Response) => {
-  const { name } = req.body;
-
-  if (!name) {
-    return res.status(400).json({ message: 'Department name is required' });
-  }
-
   try {
     const pool = await getPool();
     await pool
@@ -38,54 +36,45 @@ export const createDepartment = async (req: Request, res: Response) => {
 export const getDepartmentById = async (req: Request, res: Response) => {
   const { id } = req.params;
 
-  try {
-    const pool = await getPool();
-    const result = await pool
-      .request()
-      .input('id', id)
-      .query('SELECT * FROM Departments WHERE department_id = @id');
-
-    if (result.recordset.length === 0) {
-      return res.status(404).json({ message: 'Department not found' });
+    if (!department_name) {
+      return res.status(400).json({ message: "Department name is required" });
     }
 
-    res.status(200).json(result.recordset[0]);
-  } catch (err: any) {
-    console.error('Error fetching department:', err);
-    res.status(500).json({ message: 'Error fetching department', error: err.message });
+    await createDepartmentService(department_name);
+    res.status(201).json({ message: "Department created successfully" });
+  } catch (error) {
+    console.error("Error creating department:", error);
+    res.status(500).json({ message: "Internal Server Error" });
   }
 };
 
 // UPDATE a department
 export const updateDepartment = async (req: Request, res: Response) => {
-  const { id } = req.params;
-  const { name } = req.body;
-
   try {
-    const pool = await getPool();
-    await pool
-      .request()
-      .input('id', id)
-      .input('name', name)
-      .query('UPDATE Departments SET department_name = @name WHERE department_id = @id');
+    const { id } = req.params;
+    const { department_name } = req.body;
 
-    res.status(200).json({ message: 'Department updated successfully' });
-  } catch (err: any) {
-    console.error('Error updating department:', err);
-    res.status(500).json({ message: 'Error updating department', error: err.message });
+    if (!department_name) {
+      return res.status(400).json({ message: "Department name is required" });
+    }
+
+    await updateDepartmentService(parseInt(id), department_name);
+    res.status(200).json({ message: "Department updated successfully" });
+  } catch (error) {
+    console.error("Error updating department:", error);
+    res.status(500).json({ message: "Internal Server Error" });
   }
 };
 
 // DELETE a department
 export const deleteDepartment = async (req: Request, res: Response) => {
-  const { id } = req.params;
-
   try {
-    const pool = await getPool();
-    await pool.request().input('id', id).query('DELETE FROM Departments WHERE department_id = @id');
-    res.status(200).json({ message: 'Department deleted successfully' });
-  } catch (err: any) {
-    console.error('Error deleting department:', err);
-    res.status(500).json({ message: 'Error deleting department', error: err.message });
+    const { id } = req.params;
+
+    await deleteDepartmentService(parseInt(id));
+    res.status(200).json({ message: "Department deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting department:", error);
+    res.status(500).json({ message: "Internal Server Error" });
   }
 };
