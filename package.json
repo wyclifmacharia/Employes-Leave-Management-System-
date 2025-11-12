@@ -1,32 +1,20 @@
 {
   "name": "elms",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
+  "license": "MIT",
   "scripts": {
     "dev": "tsx watch src/index.ts",
-    "build": "tsc",
-    "start": "npm run build && node dist/index.js"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "packageManager": "pnpm@10.17.0",
-  "devDependencies": {
-    "@types/bcrypt": "^6.0.0",
-    "@types/express": "^5.0.3",
-    "@types/jsonwebtoken": "^9.0.10",
-    "@types/mssql": "^9.1.8",
-    "@types/node": "^24.9.1",
-    "dotenv": "^17.2.3",
-    "tsx": "^4.20.6",
-    "typescript": "^5.9.3"
+    "start": "node dist/index.js",
+    "build": "tsc"
   },
   "dependencies": {
-    "bcrypt": "^6.0.0",
-    "express": "^5.1.0",
-    "jsonwebtoken": "^9.0.2",
-    "mssql": "^12.0.0",
-    "nodemailer": "^7.0.10"
+    "express": "^4.18.2",
+    "mssql": "^9.1.1",
+    "dotenv": "^16.0.3"
+  },
+  "devDependencies": {
+    "tsx": "^4.0.0",
+    "typescript": "^5.0.4"
   }
 }
