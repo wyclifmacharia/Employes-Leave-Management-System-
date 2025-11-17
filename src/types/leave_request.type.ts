@@ -18,7 +18,7 @@ export interface New_leave_Request {
     end_date:Date;
     total_days:number;
     justification:Text
-    requested_at:Date;
+   
 
 }
 export interface Update_leave_Request {

@@ -34,11 +34,12 @@ export const createDepartment = async (req: Request, res: Response) => {
 
 // GET department by ID
 export const getDepartmentById = async (req: Request, res: Response) => {
-  const { id } = req.params;
+  const { de } = req.params;
 
     if (!department_name) {
       return res.status(400).json({ message: "Department name is required" });
     }
+    try{
 
     await createDepartmentService(department_name);
     res.status(201).json({ message: "Department created successfully" });

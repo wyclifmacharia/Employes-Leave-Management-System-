@@ -2,6 +2,7 @@
 import express from 'express'
 import dotenv from 'dotenv';
 import { getPool } from './db/config';
+import cors from 'cors';
 
 //import route later   
 import employeesRoutes from './routers/employees.routes';   
@@ -16,7 +17,14 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-//register routes ie,
+//middleware
+    app.use(express.json()); //parse json request body
+    app.use(cors({
+        origin: "http://localhost:5173",
+        methods: ["GET", "POST", "PUT", "DELETE"],
+    }))
+
+//register routes 
 
 employeesRoutes(app);
 leaveBalanceRoutes(app);
@@ -24,18 +32,15 @@ departmentRoutes(app);
 LeaveTypeRoutes(app);
 LeaveRequestRoutes(app);
 
-// Basic test route
-app.get("/", (req, res) => {
-  res.send("Welcome to the Employee Leave Management System API");
-});
 
-// API routes
-app.use("/api/departments", departmentRoutes);
-
+// test db connection 
+getPool()
+    .then(() => console.log("Database connected"))
+    .catch((err: any) => 
+    console.log("Database connection failed: ", err));
 // Start server
 app.listen(PORT, () => {
-  console.log(` Server running at http://localhost:${PORT}`);
+    console.log(` Server running at http://localhost:${PORT}`);
 });
-
 
 

@@ -40,6 +40,7 @@ export const createLeaveRequest = async (employee_id: number, leaveReq: New_leav
 
  // Calculate total business days
     const totalDays = await calculateBusinessDays(startDate, endDate);
+    
 
     if (totalDays <= 0){
         throw new Error("Leave must span at least one business day");
@@ -58,10 +59,8 @@ export const createLeaveRequest = async (employee_id: number, leaveReq: New_leav
  // check leave balance
     let balance= await leaveBalanceRepository.getAllLeaveBalances(employee_id); //8
 //if no balance create one with deflt 20 dyas 
-    // if (!balance) {
-    //     balance = await leaveBalanceRepository.create(employee_id,20.0);
 
-    // }
+   if (!balance) throw new Error("No leave balance found");
 
     console.log("balance days", balance)
 
@@ -76,10 +75,11 @@ export const createLeaveRequest = async (employee_id: number, leaveReq: New_leav
       end_date: endDate,
       total_days: totalDays,
       justification: leaveReq.justification,
-      requested_at:leaveReq.requested_at   
+  
      };
     
 const createLeaveRequest = await leaveRequestRepository.createLeaveReq(leaveRequest);
+return createLeaveRequest;
     }
 
 

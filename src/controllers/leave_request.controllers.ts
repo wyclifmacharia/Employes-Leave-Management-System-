@@ -4,6 +4,7 @@ import * as notificationService from '../services/notifications.services';
 
 // Create new leave request
 export const createLeaveRequest = async (req: Request, res: Response) => {
+    console.log("REQ.EMPLOYEE:", req.Employee);
     try {
         const employeeId = req.Employee?.employee_id; // From auth middleware
         const LeaveReq = req.body;
@@ -12,6 +13,7 @@ export const createLeaveRequest = async (req: Request, res: Response) => {
             return res.status(401).json({
                 success: false,
                 message: 'Unauthorized ,Employee ID not found'
+
             });
         }
 
@@ -23,6 +25,7 @@ export const createLeaveRequest = async (req: Request, res: Response) => {
             data: leaveRequest
         });
     } catch (error: any) {
+        console.log("", error);
         res.status(400).json({
             success: false,
             message: error.message || 'Failed to create leave request'
@@ -30,8 +33,9 @@ export const createLeaveRequest = async (req: Request, res: Response) => {
     }
 };
 
-// Get employee's own leave requests
+// Get employee's own leave requests by id 
 export const getMyLeaveRequests = async (req: Request, res: Response) => {
+    console.log(req.Employee)
     try {
         const employeeId = req.Employee?.employee_id;
 
@@ -234,7 +238,7 @@ export const cancelLeaveRequest = async (req: Request, res: Response) => {
     }
 };
 
-// Get employee's leave balance
+// Get employee's leave balance bY employee_id
 export const getMyBalance = async (req: Request, res: Response) => {
     try {
         const employeeId = req.Employee?.employee_id;

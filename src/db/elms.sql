@@ -119,6 +119,10 @@ INSERT INTO Leave_Balance (employee_id, balance_days) VALUES
 (4, 7.0),
 (3, 5.0),
 (2, 12.0)
+
+INSERT INTO Leave_Balance (employee_id, balance_days)
+            OUTPUT INSERTED.*
+            VALUES (12, 23.5)
 -- Inserting sample notifications
 INSERT INTO Notification (employee_id, request_id, message) VALUES
 (1, 1, 'Your leave request for Annual Leave is pending approval.'),
@@ -131,7 +135,7 @@ INSERT INTO Notification (employee_id, request_id, message) VALUES
 SELECT * FROM Employees;
 -- SELECT * FROM Departments;  
 SELECT * FROM Leave_Type;
--- SELECT * FROM Leave_Request;
+SELECT * FROM Leave_Request;
 -- SELECT * FROM Leave_Balance;
 -- SELECT * FROM Notification;
 -- GO

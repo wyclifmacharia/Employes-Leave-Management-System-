@@ -1,8 +1,6 @@
 //interaction with db 
-import {pool} from "mssql";
 import {getPool} from "../db/config";
 import { NewEmployee,Employee,UpdateEmployee } from "../types/employess.types"; 
-
 
 //CREATE EMPLOYEE
 export const createEmployee = async (employee: NewEmployee) => {
