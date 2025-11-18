@@ -53,6 +53,17 @@ CREATE TABLE Leave_Request (
         ON DELETE CASCADE ON UPDATE CASCADE
 );
 
+SELECT lr.*, 
+                           e.first_name, e.last_name, e.email,
+                           lt.type_name,
+                           d.department_name
+                    FROM Leave_Request lr
+                    INNER JOIN Employees e ON lr.employee_id = e.employee_id
+                    INNER JOIN Leave_Type lt ON lr.leave_type_id = lt.leave_type_id
+                    LEFT JOIN Departments d ON e.department_id = d.department_id
+                    WHERE lr.status = 'Pending'
+                    ORDER BY lr.requested_at ASC
+
 -- LEAVE_BALANCE TABLE
 CREATE TABLE Leave_Balance (
     balance_id INT IDENTITY(1,1) PRIMARY KEY,

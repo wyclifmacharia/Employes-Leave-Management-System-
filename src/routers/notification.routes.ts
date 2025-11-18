@@ -11,4 +11,4 @@ const notificationRouter = (app:Express) => {
     app.get('/allcars', notificationController.getAllCarsController);
 }
 
-export default notificationController;
+export default notificationRouter;

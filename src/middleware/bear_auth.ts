@@ -1,3 +1,4 @@
+import { error } from 'console';
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 
@@ -32,6 +33,7 @@ export const authenticate = (req: Request, res: Response, next: NextFunction) =>
     const jwtSecret = process.env.JWT_SECRET;
 
     if (!jwtSecret) {
+    
       return res.status(500).json({
         success: false,
         message: 'Server configuration error — JWT secret missing.'
@@ -45,7 +47,7 @@ export const authenticate = (req: Request, res: Response, next: NextFunction) =>
     req.Employee = {
       employee_id: decoded.employee_id || decoded.sub,  //handle both
       email: decoded.email || '',
-      role: decoded.role || 'Employee',                 // default to 'Employee'
+      role: decoded.role || 'user',                 // default to 'Employee'
       first_name: decoded.first_name || '',
       last_name: decoded.last_name || ''
     };
@@ -77,6 +79,7 @@ export const authenticate = (req: Request, res: Response, next: NextFunction) =>
 // Middleware for role-based access
 export const authorize = (roles: string[]) => {
   return (req: Request, res: Response, next: NextFunction) => {
+    console.log (roles);
     if (!req.Employee) {
       return res.status(401).json({
         success: false,

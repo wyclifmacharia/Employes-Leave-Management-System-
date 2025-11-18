@@ -85,7 +85,7 @@ export const findLeaveReqByEmployeeId=async(employee_id:number): Promise<Leave_R
         
     }
 
-    // Get all leave requests no mater the status  (for admin.....)
+ // Get all leave requests no mater the status  (for admin.....)
     export const findAllLeaveReq=async():Promise<Leave_Request[]> => {
         
             const pool = await getPool();

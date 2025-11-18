@@ -61,10 +61,13 @@ export const getMyLeaveRequests = async (req: Request, res: Response) => {
     }
 };
 
-// Get all pending leave requests (Manager/Admin)
+// Get all pending leave requests (admin)
 export const getPendingRequests = async (req: Request, res: Response) => {
+
     try {
-        const requests = await leaveRequestService.getPendingLeaveRequests();
+     
+       
+        const requests = await leaveRequestService.getPendingLeaveRequest();
 
         res.status(200).json({
             success: true,
@@ -72,9 +75,11 @@ export const getPendingRequests = async (req: Request, res: Response) => {
             data: requests
         });
     } catch (error: any) {
-        res.status(400).json({
+        console.log("Error fetching pending requests:", error.message);
+        res.status(500).json({
             success: false,
-            message: error.message || 'Failed to fetch pending requests'
+            message: error.message || 'Failed to fetch pending requests',
+            error:error.message
         });
     }
 };

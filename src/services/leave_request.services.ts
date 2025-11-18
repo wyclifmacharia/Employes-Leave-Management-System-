@@ -3,6 +3,7 @@ import * as leaveRequestRepository from "../repositories/leave_request.repositor
 import * as leaveBalanceRepository from "../repositories/leave_balance.repositories";
 import { Leave_Request, New_leave_Request } from "../types/leave_request.type";
 import { Leave_Balance } from "../types/leavebalance.types";
+import { error } from "console";
 
 
 //Calculate business days between two dates
@@ -161,11 +162,17 @@ export const getEmployeeLeaveRequests = async (employee_id: number) => {
 
 //Get all pending leave requests (admin)
  
-export const getPendingLeaveRequests = async () => {
-  try {
-    return await leaveRequestRepository.findleaveReqPending();
-  } catch (error) {
+export const getPendingLeaveRequest = async ():Promise<Leave_Request[]> => {
+
+  try {  
+    
+    const  pendingRequest=await leaveRequestRepository.findleaveReqPending();
+    console.log(pendingRequest.length)
+    return pendingRequest;
+  } catch (error:any) {
+    console.error(error.message);
     throw error;
+  
   }
 };
 

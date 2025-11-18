@@ -111,8 +111,11 @@ const ensureEmployeeExists = async (employee_id: number) => {
     // jwt payload
      const payload = {
         sub : employee.employee_id, 
+        employee_id: employee.employee_id, 
         first_name : employee.first_name,
         last_name: employee.last_name,
+        role: employee.role,
+        email: employee.email,
         exp:Math.floor(Date.now() /1000)+(60*60),
 
      }
