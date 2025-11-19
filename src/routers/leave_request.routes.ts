@@ -12,16 +12,22 @@ import * as leaveController from "../controllers/leave_request.controllers";
   app.get("/MyBal/:employee_id", authenticate, leaveController.getMyBalance); // Get employee leavebalance by employee_id
   app.delete("/:request_id/cancel", authenticate, leaveController.cancelLeaveRequest); // Cancel a pending request
 
-  // ADMIN / MANAGER routes
-  app.get("/pending", authenticate, authorize(["admin"]), leaveController.getPendingRequests); // Get pending requests
-  app.get("/leaveReq", authenticate, authorize(["Admin"]), leaveController.getAllRequests);             // Get all leave requests
-  app.get("/ReqById/:request_id", authenticate, authorize(["Admin","Manager"]), leaveController.getLeaveRequestById); // Get specific request by ID
-  app.patch("/:request_id/approve", authenticate, authorize(["admin"]), leaveController.approveLeaveRequest); // Approve request
-  app.patch("/:request_id/reject", authenticate, authorize(["Manager","Admin"]), leaveController.rejectLeaveRequest);   // Reject request
+  // ADMIN / MANAGER 
+  // Get pending requests
+  app.get("/api/pending", authenticate, authorize(['manager', 'admin']), leaveController.getPendingRequests); 
+  // Get all leave requests
+  app.get("/api/leaveReq", authenticate, authorize(["admin"]), leaveController.getAllRequests);   
+   // Get specific request by ID
+  app.get("/ReqById/:request_id", authenticate, authorize(["admin","manager"]), leaveController.getLeaveRequestById); 
+  // Approve request
+  app.patch("/:request_id/approve", authenticate, authorize(["admin"]), leaveController.approveLeaveRequest);
+  // Reject request
+  app.patch("/:request_id/reject", authenticate, authorize(["manager","admin"]), leaveController.rejectLeaveRequest); 
+
 
   // Notifications
   app.get("/notifications/my", authenticate, leaveController.getMyNotifications);   // Employee notifications
-  app.get("/notifications", authenticate, authorize(["Admin"]), leaveController.getAllNotifications); // Admin all notifications
+  app.get("/notifications", authenticate, authorize(["admin"]), leaveController.getAllNotifications); // Admin all notifications
   app.delete("/notifications/:notification_id", authenticate, leaveController.deleteNotification); // Delete a notification
  
   

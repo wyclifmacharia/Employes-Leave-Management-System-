@@ -65,8 +65,6 @@ export const getMyLeaveRequests = async (req: Request, res: Response) => {
 export const getPendingRequests = async (req: Request, res: Response) => {
 
     try {
-     
-       
         const requests = await leaveRequestService.getPendingLeaveRequest();
 
         res.status(200).json({
@@ -165,6 +163,7 @@ export const approveLeaveRequest = async (req: Request, res: Response) => {
             data: updatedRequest
         });
     } catch (error: any) {
+        console.log(error.message);
         res.status(400).json({
             success: false,
             message: error.message || 'Failed to approve leave request'

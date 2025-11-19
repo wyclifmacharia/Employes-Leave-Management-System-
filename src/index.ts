@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 import { getPool } from './db/config';
 import cors from 'cors';
 
-//import route later   
+//import route   
 import employeesRoutes from './routers/employees.routes';   
 import departmentRoutes from './routers/department.routes';
 import leaveBalanceRoutes from './routers/leave_balance.routes';
@@ -23,6 +23,7 @@ const PORT = process.env.PORT || 3000;
         origin: "http://localhost:5173",
         methods: ["GET", "POST", "PUT", "DELETE"],
     }))
+    app.use(express.urlencoded({ extended: true }));
 
 //register routes 
 

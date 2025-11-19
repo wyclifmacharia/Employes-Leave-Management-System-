@@ -79,7 +79,7 @@ export const authenticate = (req: Request, res: Response, next: NextFunction) =>
 // Middleware for role-based access
 export const authorize = (roles: string[]) => {
   return (req: Request, res: Response, next: NextFunction) => {
-    console.log (roles);
+    //console.log (roles);
     if (!req.Employee) {
       return res.status(401).json({
         success: false,

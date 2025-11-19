@@ -30,13 +30,13 @@ export const create = async (employee_id:number, balance_days:number) => {
 
 }
 //Deduct day from the balance 
-export const deductBalance = async (employee_id:number,days:number) => {
+export const deductBalance = async (employee_id:number,total_days:number) => {
 
     const pool = await getPool();
     const result = await pool
         .request()
         .input('employee_id', employee_id)
-        .input('days', days)
+        .input('days', total_days)
 
         .query(`
             UPDATE Leave_Balance 
