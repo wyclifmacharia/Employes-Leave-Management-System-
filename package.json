@@ -2,6 +2,7 @@
   "name": "elms",
   "version": "1.0.0",
   "main": "index.js",
+<<<<<<< HEAD
   "license": "ISC",
   "scripts": {
     "dev": "tsx watch src/index.ts",
@@ -30,5 +31,21 @@
     "@types/nodemailer": "^7.0.3",
     "tsx": "^4.20.6",
     "typescript": "^5.9.3"
+=======
+  "license": "MIT",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "start": "node dist/index.js",
+    "build": "tsc"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "mssql": "^9.1.1",
+    "dotenv": "^16.0.3"
+  },
+  "devDependencies": {
+    "tsx": "^4.0.0",
+    "typescript": "^5.0.4"
+>>>>>>> bf19a03a0b36ecfbb0bb85aa5c43f3e9c2c573ca
   }
 }

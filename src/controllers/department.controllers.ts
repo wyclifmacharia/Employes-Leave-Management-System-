@@ -6,7 +6,11 @@ import {
   deleteDepartmentService,
 } from "../services/department.services";
 
+<<<<<<< HEAD
 // READ - Get all departments
+=======
+// GET all departments
+>>>>>>> bf19a03a0b36ecfbb0bb85aa5c43f3e9c2c573ca
 export const getDepartments = async (req: Request, res: Response) => {
   try {
     const departments = await getDepartmentsService();
@@ -17,11 +21,22 @@ export const getDepartments = async (req: Request, res: Response) => {
   }
 };
 
+<<<<<<< HEAD
 // CREATE - Add new department
+=======
+//  CREATE a new department
+>>>>>>> bf19a03a0b36ecfbb0bb85aa5c43f3e9c2c573ca
 export const createDepartment = async (req: Request, res: Response) => {
   try {
     const { department_name } = req.body;
 
+<<<<<<< HEAD
+=======
+// GET department by ID
+export const getDepartmentById = async (req: Request, res: Response) => {
+  const { id } = req.params;
+
+>>>>>>> bf19a03a0b36ecfbb0bb85aa5c43f3e9c2c573ca
     if (!department_name) {
       return res.status(400).json({ message: "Department name is required" });
     }
@@ -34,7 +49,11 @@ export const createDepartment = async (req: Request, res: Response) => {
   }
 };
 
+<<<<<<< HEAD
 // UPDATE - Modify existing department
+=======
+// UPDATE a department
+>>>>>>> bf19a03a0b36ecfbb0bb85aa5c43f3e9c2c573ca
 export const updateDepartment = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
@@ -52,7 +71,11 @@ export const updateDepartment = async (req: Request, res: Response) => {
   }
 };
 
+<<<<<<< HEAD
 // DELETE - Remove a department
+=======
+// DELETE a department
+>>>>>>> bf19a03a0b36ecfbb0bb85aa5c43f3e9c2c573ca
 export const deleteDepartment = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;

@@ -37,9 +37,12 @@ export const deleteDepartmentService = async (id: number) => {
     .input("department_id", sql.Int, id)
     .query("DELETE FROM Departments WHERE department_id = @department_id");
 };
+<<<<<<< HEAD
  export const getDepartmentById = async (id: number) => {
   const pool = await getPool();
   const result = await pool
     .request()
     .input("department_id", sql.Int, id)
     .query("SELECT * FROM Departments WHERE department_id = @department_id");}
+=======
+>>>>>>> bf19a03a0b36ecfbb0bb85aa5c43f3e9c2c573ca
